@@ -4,7 +4,7 @@
 
 @section('content')
 
-    <h5 class="card-title">Our Customers</h5>
+    <h3 class="card-title">Customer List</h3>
     @if ($errors->any())
     <div class="alert alert-danger">
         <ul>

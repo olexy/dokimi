@@ -11,7 +11,7 @@
                 <a class="nav-link" href="customers">Customers</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="contact" tabindex="-1" aria-disabled="true">Contact</a>
+                <a class="nav-link" href="contact">Contact</a>
             </li>
             </ul>
         </div>

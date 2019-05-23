@@ -14,9 +14,9 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        $acustomers = Customer::where('status', 1)->paginate(2);
+        $acustomers = Customer::active();
 
-        $icustomers = Customer::where('status', 0)->paginate(2);
+        $icustomers = Customer::inactive();
 
 
         // return view('customers.list', [
@@ -45,21 +45,13 @@ class CustomersController extends Controller
      */
     public function store()
     {
-        // dd(request()->all());
-
         $data = request()->validate([
             'name' => 'required|min:5|max:255|string',
             'email' => 'required|email|max:255',
             'status' => 'required'
         ]);
 
-         $customer = new Customer();
-
-         $customer->name = request('name');
-         $customer->email = request('email');
-         $customer->status = request('status');
-
-         $customer->save();
+        Customer::create($data);
 
          return redirect()->back();
     }
