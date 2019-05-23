@@ -1,5 +1,8 @@
 @extends('layouts.temp')
 
+@section('title', 'Contact Us')
+
+
 @section('content')
     <div class="card-body">
         <h5 class="card-title">Our Contact</h5>

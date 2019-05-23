@@ -14,9 +14,17 @@ class CustomersController extends Controller
      */
     public function index()
     {
-        return view('customers.list', [
-            'customers' => Customer::paginate(5)
-        ]);
+        $acustomers = Customer::where('status', 1)->paginate(2);
+
+        $icustomers = Customer::where('status', 0)->paginate(2);
+
+
+        // return view('customers.list', [
+        //     'acustomers' => $acustomers,
+        //     'icustomers' => $icustomers
+        // ]);
+
+        return view('customers.list', compact('acustomers', 'icustomers'));
     }
 
     /**
@@ -41,12 +49,16 @@ class CustomersController extends Controller
 
         $data = request()->validate([
             'name' => 'required|min:5|max:255|string',
-            'email' => 'required|email|max:255'
+            'email' => 'required|email|max:255',
+            'status' => 'required'
         ]);
+
          $customer = new Customer();
 
          $customer->name = request('name');
          $customer->email = request('email');
+         $customer->status = request('status');
+
          $customer->save();
 
          return redirect()->back();
