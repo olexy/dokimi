@@ -27,12 +27,20 @@
                     <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
                 </div>
                 <div class="form-group">
+                    <label for="company">Company</label>
+                    <select class="form-control" id="company" name="company_id">
+                        @foreach ($companies as $company)
+                            <option value="{{ $company->id }}">{{ $company->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="status">Status</label>
                     <select class="form-control" id="status" name="status">
                         <option value=1>Active</option>
                         <option value=0 >Inactive</option>
                     </select>
-                    </div>
+                </div>
                 <button type="submit" class="btn btn-success bt-sm">Add Customer</button>
             </div>
         </form>
@@ -50,31 +58,48 @@
             <div class="col-sm">
                 <h4>Active</h4>
             </div>
+            <div class="col-sm">
+                <h4>Companies</h4>
+            </div>
         </div>
-            <div class="row">
-              <div class="col-sm">
-                    @foreach ($icustomers as $icustomer)
-                        <ul class="list-group">
-                            <li class="list-group-item d-flex justify-content-between align-items-center">
-                                {{ $icustomer->name }}
-                                <span class="badge badge-primary badge-pill"> {{ $icustomer->email }}</span>
-                            </li>
-                        </ul>
-                    @endforeach
-                {{ $icustomers->links() }}
-              </div>
-              <div class="col-sm">
-                    @foreach ($acustomers as $acustomer)
+        <div class="row">
+            <div class="col-sm">
+                @foreach ($icustomers as $icustomer)
                     <ul class="list-group">
                         <li class="list-group-item d-flex justify-content-between align-items-center">
-                            {{ $acustomer->name }}
-                            <span class="badge badge-primary badge-pill"> {{ $acustomer->email }}</span>
+                            {{ $icustomer->name }}
+                            <span class="badge badge-primary badge-pill"> {{ $icustomer->company->name }}</span>
                         </li>
                     </ul>
                 @endforeach
-                {{ $acustomers->links() }}
-              </div>
+            {{ $icustomers->links() }}
             </div>
-          </div>
+            <div class="col-sm">
+                @foreach ($acustomers as $acustomer)
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ $acustomer->name }}
+                        <span class="badge badge-primary badge-pill"> {{ $acustomer->email }}</span>
+                    </li>
+                </ul>
+            @endforeach
+            {{ $acustomers->links() }}
+            </div>
+            <div class="col-sm">
+                @foreach ($companies as $company)
+                <ul class="list-group">
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ $company->name }}
+                        @foreach ($company->customers as $customer)
+                            <span class="badge badge-primary badge-pill"> {{ $customer->name  }}</span>
+
+                        @endforeach
+                    </li>
+                </ul>
+            @endforeach
+            {{ $companies->links() }}
+            </div>
+        </div>
+    </div>
 
 @endsection

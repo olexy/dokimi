@@ -2,6 +2,7 @@
 
 namespace dokimi\Http\Controllers;
 
+use dokimi\Company;
 use dokimi\Customer;
 use Illuminate\Http\Request;
 
@@ -18,13 +19,15 @@ class CustomersController extends Controller
 
         $icustomers = Customer::inactive();
 
+        $companies = Company::paginate(3);
+
 
         // return view('customers.list', [
         //     'acustomers' => $acustomers,
         //     'icustomers' => $icustomers
         // ]);
 
-        return view('customers.list', compact('acustomers', 'icustomers'));
+        return view('customers.list', compact('acustomers', 'icustomers', 'companies'));
     }
 
     /**
@@ -48,7 +51,8 @@ class CustomersController extends Controller
         $data = request()->validate([
             'name' => 'required|min:5|max:255|string',
             'email' => 'required|email|max:255',
-            'status' => 'required'
+            'status' => 'required',
+            'company_id' => 'required'
         ]);
 
         Customer::create($data);
