@@ -21,13 +21,9 @@ class CustomersController extends Controller
 
         $companies = Company::paginate(3);
 
+        $customer = new Customer();
 
-        // return view('customers.list', [
-        //     'acustomers' => $acustomers,
-        //     'icustomers' => $icustomers
-        // ]);
-
-        return view('customers.list', compact('acustomers', 'icustomers', 'companies'));
+        return view('customers.index', compact('acustomers', 'icustomers', 'companies', 'customer'));
     }
 
     /**
@@ -48,14 +44,9 @@ class CustomersController extends Controller
      */
     public function store()
     {
-        $data = request()->validate([
-            'name' => 'required|min:5|max:255|string',
-            'email' => 'required|email|max:255',
-            'status' => 'required',
-            'company_id' => 'required'
-        ]);
 
-        Customer::create($data);
+
+        Customer::create($this->validateRequest());
 
          return redirect()->back();
     }
@@ -66,9 +57,11 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Customer $customer)
     {
-        //
+        // $customer = Customer::where('id', $customer)->firstOrFail();
+
+        return view('customers.show', compact('customer'));
     }
 
     /**
@@ -77,9 +70,10 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Customer $customer)
     {
-        //
+        $companies = Company::all();
+        return view('customers.edit', compact('customer', 'companies'));
     }
 
     /**
@@ -89,9 +83,11 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Customer $customer)
     {
-        //
+        $customer->update($this->validateRequest());
+
+         return redirect('customers/' . $customer->id);
     }
 
     /**
@@ -100,8 +96,20 @@ class CustomersController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Customer $customer)
     {
-        //
+        $customer->delete();
+
+        return redirect('customers');
+    }
+
+    private function validateRequest()
+    {
+        return request()->validate([
+            'name' => 'required|min:5|max:255|string',
+            'email' => 'required|email|max:255',
+            'status' => 'required',
+            'company_id' => 'required'
+        ]);
     }
 }

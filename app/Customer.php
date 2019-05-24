@@ -12,6 +12,15 @@ class Customer extends Model
     //Guarded option
     protected $guarded =[];
 
+    protected $attributes = [
+        'status' => 1
+    ];
+
+    public function getStatusAttribute($attribute)
+    {
+        return $this->statusOptions()[$attribute];
+    }
+
     public function scopeActive($query)
     {
         return $query->where('status', 1)->paginate(3);
@@ -28,4 +37,12 @@ class Customer extends Model
     {
         return $this->belongsTo(Company::class);
     }
+
+	public function statusOptions()
+	{
+		return [
+            1 => 'Active',
+            0 => 'Inactive',
+        ];
+	}
 }
