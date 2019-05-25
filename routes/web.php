@@ -14,7 +14,7 @@
 Route::view('/', 'index');
 Route::view('about', 'about');
 // Route::view('customers', 'customers.list');
-Route::view('contact', 'contact');
+// Route::view('contact', 'contact');
 Route::view('welcome', 'welcome');
 
 Auth::routes();
@@ -22,3 +22,5 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::resource('customers', 'CustomersController');
+
+Route::resource('contacts', 'ContactFormController');
