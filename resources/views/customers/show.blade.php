@@ -9,7 +9,7 @@
         </div>
     </div>
     <div class="row">
-        <div><a href="/customers/{{ $customer->id }}/edit" class="btn btn-secondary">Edit Customer</a></div>
+        <div><a href="{{ route('customers.update', $customer) }}/edit" class="btn btn-secondary">Edit Customer</a></div>
         <div class="col-3">
             <p><strong>Name: </strong>{{ $customer->name }} </p>
             <p><strong>Email: </strong>{{ $customer->email }} </p>

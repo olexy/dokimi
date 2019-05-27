@@ -42,11 +42,9 @@ class ContactFormController extends Controller
             'message' => 'required|min:5'
         ]);
 
-        // dd($data);
-
         Mail::to('test@fake.com')->send(new ContactFormMail($data));
 
-        return redirect()->back();
+        return redirect()->back()->with('success', 'Thanks for your message, we will be in touch!');
 
     }
 

@@ -13,13 +13,11 @@
 
 Route::view('/', 'index');
 Route::view('about', 'about');
-// Route::view('customers', 'customers.list');
-// Route::view('contact', 'contact');
 Route::view('welcome', 'welcome');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('/home', 'HomeController@index');
 
 Route::resource('customers', 'CustomersController');
 

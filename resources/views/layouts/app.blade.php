@@ -33,6 +33,7 @@
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <!-- Left Side Of Navbar -->
                     <ul class="navbar-nav mr-auto">
+                            @include('layouts.nav')
 
                     </ul>
 
@@ -71,7 +72,16 @@
                 </div>
             </div>
         </nav>
-        @include('layouts.nav')
+
+
+        @if (Session()->has('success'))
+
+        <div class="alert alert-success" role="alert">
+            <strong>Success:</strong> {{ Session()->get('success') }}
+        </div>
+
+        @endif
+
 
         <main class="py-4">
             @yield('content')
