@@ -14,7 +14,8 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <div class="new-class">You are logged in!</div>
+                    <vue-button text="Dynamic Text" type="submit"></vue-button>
                 </div>
             </div>
         </div>
