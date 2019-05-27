@@ -71,7 +71,7 @@
                 </li>
             </ul>
         @endforeach
-        {{ $companies->links() }}
+        {{-- {{ $companies->links() }} --}}
         </div>
     </div>
 

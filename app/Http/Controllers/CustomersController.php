@@ -5,6 +5,9 @@ namespace dokimi\Http\Controllers;
 use dokimi\Company;
 use dokimi\Customer;
 use Illuminate\Http\Request;
+use dokimi\Mail\WelcomeNewUserMail;
+use Illuminate\Support\Facades\Mail;
+use dokimi\Events\NewCustomerRegistrationEvent;
 
 class CustomersController extends Controller
 {
@@ -27,7 +30,7 @@ class CustomersController extends Controller
 
         $icustomers = Customer::inactive();
 
-        $companies = Company::paginate(3);
+        $companies = Company::all();
 
         $customer = new Customer();
 
@@ -52,11 +55,11 @@ class CustomersController extends Controller
      */
     public function store()
     {
+        $customer = Customer::create($this->validateRequest());
 
+        event(new NewCustomerRegistrationEvent($customer));
 
-        Customer::create($this->validateRequest());
-
-         return redirect()->back();
+        return redirect()->back()->with('success', 'Customer saved successfully!');
     }
 
     /**
