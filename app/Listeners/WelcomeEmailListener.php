@@ -8,7 +8,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use dokimi\Events\NewCustomerRegistrationEvent;
 use dokimi\Mail\WelcomeNewUserMail;
 
-class WelcomeEmailListener
+class WelcomeEmailListener implements ShouldQueue
 {
     /**
      * Handle the event.
@@ -19,6 +19,8 @@ class WelcomeEmailListener
     public function handle(NewCustomerRegistrationEvent $event)
     {
         $name = $event->customer->name;
+
+        sleep(10);
 
         Mail::to($event->customer->email)->send(new WelcomeNewUserMail($name));
     }
