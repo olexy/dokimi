@@ -14,7 +14,7 @@
         </ul>
     </div>
     @endif
-        <form action="/customers/{{ $customer->id }}" method="POST">
+        <form action="/customers/{{ $customer->id }}" method="POST" enctype="multipart/form-data">
             @method('PATCH')
             @include('customers.form')
             <button type="submit" class="btn btn-success bt-sm">Edit Customer</button>

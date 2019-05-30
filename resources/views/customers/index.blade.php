@@ -14,14 +14,18 @@
             </ul>
         </div>
     @endif
-    <form action="/customers" method="POST">
-        @include('customers.form')
+    @can('create', dokimi\Customer::class)
+        <form action="/customers" method="POST" enctype="multipart/form-data">
+            @include('customers.form')
 
 
-        <button type="submit" class="btn btn-success bt-sm">Add Customer</button>
+            <button type="submit" class="btn btn-success bt-sm">Add Customer</button>
 
-    </form>
+        </form>
     <hr>
+
+    @endcan
+
     {{-- <h5 class="card-title">Customer List</h5> --}}
 
 
@@ -51,8 +55,7 @@
         <div class="col-sm">
             @foreach ($acustomers as $acustomer)
             <ul class="list-group">
-                <li class="list-group-item d-flex justify-content-between align-items-center">
-                    {{ $acustomer->name }}
+                <li class="list-group-item d-flex justify-content-between align-items-center"><a href="customers/{{ $acustomer->id }}"> {{ $acustomer->name }}</a>
                     <span class="badge badge-primary badge-pill"> {{ $acustomer->email }}</span>
                     <span class="badge badge-success badge-pill"> {{ $acustomer->status }}</span>
                 </li>

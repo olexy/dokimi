@@ -7,6 +7,7 @@ use dokimi\Customer;
 use Illuminate\Http\Request;
 use dokimi\Mail\WelcomeNewUserMail;
 use Illuminate\Support\Facades\Mail;
+use Intervention\Image\Facades\Image;
 use dokimi\Events\NewCustomerRegistrationEvent;
 
 class CustomersController extends Controller
@@ -55,11 +56,15 @@ class CustomersController extends Controller
      */
     public function store()
     {
+        $this->authorize('create', Customer::class);
+
         $customer = Customer::create($this->validateRequest());
+
+        $this->storeImage($customer);
 
         event(new NewCustomerRegistrationEvent($customer));
 
-        return redirect()->back()->with('success', 'Customer saved successfully!');
+        return redirect('customers')->with('success', 'Customer saved successfully!');
     }
 
     /**
@@ -98,6 +103,8 @@ class CustomersController extends Controller
     {
         $customer->update($this->validateRequest());
 
+        $this->storeImage($customer);
+
          return redirect('customers/' . $customer->id);
     }
 
@@ -109,6 +116,8 @@ class CustomersController extends Controller
      */
     public function destroy(Customer $customer)
     {
+        $this->authorize('delete', $customer);
+
         $customer->delete();
 
         return redirect('customers');
@@ -120,7 +129,39 @@ class CustomersController extends Controller
             'name' => 'required|min:5|max:255|string',
             'email' => 'required|email|max:255',
             'status' => 'required',
-            'company_id' => 'required'
+            'company_id' => 'required',
+            'image' => 'sometimes|file|image|max:5000',
         ]);
     }
+
+    // private function validateRequest()
+    // {
+    //     return tap(request()->validate([
+
+    //         'name' => 'required|min:5|max:255|string',
+    //         'email' => 'required|email|max:255',
+    //         'status' => 'required',
+    //         'company_id' => 'required',
+    //     ]), function(){
+
+    //         if(request()->hasFile('image')){
+    //             request()->validate([
+    //                 'image' => 'file|image|max:5000',
+    //             ]);
+    //         }
+    //     });
+    // }
+
+	public function storeImage($customer)
+	{
+		if(request()->has('image')) {
+            $customer->update([
+                'image' => request()->image->store('uploads/customers', 'public')
+            ]);
+
+            $image = Image::make(public_path('storage/' . $customer->image))->fit(300, 300);
+
+            $image->save();
+        }
+	}
 }

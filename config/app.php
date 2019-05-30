@@ -173,6 +173,7 @@ return [
         dokimi\Providers\AuthServiceProvider::class,
         // dokimi\Providers\BroadcastServiceProvider::class,
         dokimi\Providers\EventServiceProvider::class,
+        dokimi\Providers\TelescopeServiceProvider::class,
         dokimi\Providers\RouteServiceProvider::class,
 
     ],

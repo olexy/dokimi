@@ -1,5 +1,4 @@
 @csrf
-<div class="form-group">
     <div class="form-group">
         <label for="name">Name</label>
         <input type="text" class="form-control" name="name" id="name" placeholder="Customer Name" value="{{ old('name') ?? $customer->name }}">
@@ -26,4 +25,7 @@
             @endforeach
         </select>
     </div>
-</div>
+    <div class="form-group d-flex flex-column">
+        <label>Profile Image</label>
+        <input type="file" name="image">
+    </div>
