@@ -12,6 +12,15 @@ class CustomersTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        Event::fake();
+
+    }
+
+
     /** @test */
     public function only_logged_in_users_can_see_the_customers_list()
     {
@@ -33,13 +42,7 @@ class CustomersTest extends TestCase
     /** @test */
     public function a_customer_can_be_added_through_the_form()
     {
-        $this->withoutExceptionHandling();
-
-        Event::fake();
-
-        $response = $this->actingAs(factory(User::class)->create([
-            'email' => 'rau.makenzie@example.com'
-        ]));
+        $this->actingAsAdmin();
 
         $response = $this->post('/customers', $this->data());
 
@@ -49,13 +52,7 @@ class CustomersTest extends TestCase
     /** @test */
     public function a_name_is_required()
     {
-        $this->withoutExceptionHandling();
-
-        Event::fake();
-
-        $response = $this->actingAs(factory(User::class)->create([
-            'email' => 'rau.makenzie@example.com',
-        ]));
+        $this->actingAsAdmin();
 
         $response = $this->post('/customers', array_merge($this->data(), ['name' => '']));
 
@@ -65,6 +62,48 @@ class CustomersTest extends TestCase
 
         //dd(array_merge($this->data(), ['name' => '']));
     }
+
+    /** @test */
+    public function a_name_is_at_least_5_characters()
+    {
+        $this->actingAsAdmin();
+
+        $response = $this->post('/customers', array_merge($this->data(), ['name' => 'a']));
+
+        $response->assertSessionHasErrors('name');
+
+        $this->assertCount(0, Customer::all());
+
+        //dd(array_merge($this->data(), ['name' => '']));
+    }
+
+    /** @test */
+    public function an_email_is_required()
+    {
+        $this->actingAsAdmin();
+
+        $response = $this->post('/customers', array_merge($this->data(), ['email' => '']));
+
+        $response->assertSessionHasErrors('email');
+
+        $this->assertCount(0, Customer::all());
+
+        //dd(array_merge($this->data(), ['name' => '']));
+    }
+
+     /** @test */
+     public function a_valid_email_is_required()
+     {
+         $this->actingAsAdmin();
+
+         $response = $this->post('/customers', array_merge($this->data(), ['email' => 'theetehe']));
+
+         $response->assertSessionHasErrors('email');
+
+         $this->assertCount(0, Customer::all());
+
+         //dd(array_merge($this->data(), ['name' => '']));
+     }
 
 	private function data()
 	{
@@ -76,5 +115,13 @@ class CustomersTest extends TestCase
         ];
     }
 
+
+
+	private function actingAsAdmin(){
+
+        $this->actingAs(factory(User::class)->create([
+            'email' => 'rau.makenzie@example.com'
+            ]));
+    }
 
 }
