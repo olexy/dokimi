@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'de',
 
     /*
     |--------------------------------------------------------------------------
@@ -175,6 +175,8 @@ return [
         dokimi\Providers\EventServiceProvider::class,
         dokimi\Providers\TelescopeServiceProvider::class,
         dokimi\Providers\RouteServiceProvider::class,
+        Laravel\Passport\PassportServiceProvider::class,
+
 
     ],
 
