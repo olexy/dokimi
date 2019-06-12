@@ -2,12 +2,10 @@
 
 namespace dokimi;
 
-use Laravel\Scout\Searchable;
 use Illuminate\Database\Eloquent\Model;
 
 class Customer extends Model
 {
-    use Searchable;
     //fillable option
     // protected $fillable = ['name', 'email', 'status'];
 
